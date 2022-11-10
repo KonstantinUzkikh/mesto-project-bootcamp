@@ -1,0 +1,17 @@
+.plase__icon {
+  width: 22px;
+  height: 19px;
+  padding-right: 10px;
+  background-image: url(../../../images/heart_disabled.svg);
+  background-position: center;
+  background-repeat: no-repeat;
+  color: #000000;
+}
+
+.plase__icon:hover {
+  opacity: .5;
+}
+
+.plase__icon_active {
+  background-image: url(../../../images/heart_active.svg);
+}

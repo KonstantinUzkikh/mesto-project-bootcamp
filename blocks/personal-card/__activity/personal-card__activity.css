@@ -1,0 +1,24 @@
+.personal-card__activity {
+  margin: 16px 0 0;
+  padding: 0;
+  width: 100%;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 22px;
+  color: #FFFFFF;
+}
+
+@media screen and (max-width: 1100px) {
+  .personal-card__activity {
+    margin-top: 6px;      /* ??? */
+    margin-bottom: 36px;
+    text-align: center;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .personal-card__activity {
+    font-size: 14px;
+    line-height: 17px;
+  }
+}

@@ -1,0 +1,13 @@
+.footer {
+  display: flex;
+  position: relative;
+  width: 100%;
+  padding-top: 67px;
+  box-sizing: border-box;
+}
+
+@media screen and (max-width: 1100px) {
+  .footer {
+    padding-top: 48px;
+  }
+}

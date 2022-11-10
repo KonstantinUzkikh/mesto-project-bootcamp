@@ -1,0 +1,12 @@
+.personal-card__info {
+  display: flex;
+  position: relative;
+  flex-wrap: wrap;
+  align-content: center;
+  justify-content: center;
+  align-items: baseline;
+  max-width: 337px;
+
+  /* УБРАТЬ
+  border: green solid 1px; */
+}
