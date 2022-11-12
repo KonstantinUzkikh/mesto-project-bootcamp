@@ -3,10 +3,12 @@
   position: relative;
   flex-wrap: wrap;
   align-content: center;
-  justify-content: center;
   align-items: baseline;
-  max-width: 337px;
+  max-width: 336px;
+}
 
-  /* УБРАТЬ
-  border: green solid 1px; */
+@media screen and (max-width: 1100px) {
+  .personal-card__info {
+    justify-content: center;
+  }
 }
