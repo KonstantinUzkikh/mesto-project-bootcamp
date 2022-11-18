@@ -10,21 +10,31 @@
 <body class="body">
   <div class="page">
 
-    <!--  Страница состоит из двух частей: "ОСНОВНАЯ СТРАНИЦА (видимая область)" и "ФОРМЫ (невидимая область)".
+    <!--
+    Страница состоит из трех частей:
+    видимая область - "ОСНОВНАЯ СТРАНИЦА" и "МОДАЛЬНЫЕ ОКНА",
+    невидимая область - "ШАБЛОНЫ".
 
-          В части "ОСНОВНАЯ СТРАНИЦА (видимая область)" реализована "пассивная" часть сайта: отображение профиля и
-          предварительно размещенных карточек с фотографиями.
+    "ОСНОВНАЯ СТРАНИЦА".
+    Реализована "пассивная" часть сайта: шапка, отображение профиля и подвал.
 
-          В части "ФОРМЫ (невидимая область)" реализована форма для редактирования профиля - class="popup",
-          которая будет использована в дальнейшем для придания сайту интерактивности.
+    "МОДАЛЬНЫЕ ОКНА"
+    Реализованы для отображения в режиме модальных окон:
+    - форма редактирования профиля - class="popup",
+    - форма ввода новых карточек -
+    - окно просмотра фотографии в крупном размере.
 
-          На данном этапе разработки JS не использован, интерактивность не реализована.
-          Видимостью формы можно управлять "в ручном режиме" путем подключения к форме модификатора popup_opend.
-        -->
+    "ШАБЛОНЫ"
+    Реализованы html-шаблоны для загрузки:
+    - карточек,
+    - фотографии в крупном размере.
 
-    <!-- ОСНОВНАЯ СТРАНИЦА (видимая область) -->
+    Интерактивность сайта реализована с использованием JS.
+    -->
 
-    <!--  секция header -->
+    <!-- ОСНОВНАЯ СТРАНИЦА -->
+
+    <!-- секция header -->
     <header class="header">
       <div class="header__logo"></div>
     </header>
@@ -47,79 +57,20 @@
       <!-- секция elements -->
       <article class="elements" aria-label="Картотека">
         <ul class="unmarked-list elements__places-list">
-          <!-- <li class="unmarked-list__item elements__place-item">
-            <article class="place" aria-label="Карточка">
-              <img class="place__image" src="./images/kirill-pershin-1088404-unsplash.jpg" alt="Фотография: древний христианский храм в Карачаево-Черкесии">
-              <button class="place__delete-button" type="button" aria-label="Удалить"></button>
-              <div class="place__title-box">
-                <h2 class="place__title">Карачаевск</h2>
-                <button class="place__like-button place__like-button_active" type="button" aria-label="Лайк"></button>
-              </div>
-            </article>
-          </li>
-          <li class="unmarked-list__item">
-            <article class="place" aria-label="Карточка">
-              <img class="place__image" src="./images/kirill-pershin-1404681-unsplash.jpg" alt="Фотография: гора в далеке на заднем плане.">
-              <button class="place__delete-button" type="button" aria-label="Удалить"></button>
-              <div class="place__title-box">
-                <h2 class="place__title">Гора Эльбрус</h2>
-                <button class="place__like-button" type="button" aria-label="Лайк"></button>
-              </div>
-            </article>
-          </li>
-          <li class="unmarked-list__item">
-            <article class="place" aria-label="Карточка">
-              <img class="place__image" src="./images/kirill-pershin-1556355-unsplash.jpg" alt="Фотография: гора Белалакая - вершина западной части главного хребта Большого Кавказа.">
-              <button class="place__delete-button" type="button" aria-label="Удалить"></button>
-              <div class="place__title-box">
-                <h2 class="place__title">Домбай</h2>
-                <button class="place__like-button" type="button" aria-label="Лайк"></button>
-              </div>
-            </article>
-          </li>
-          <li class="unmarked-list__item">
-            <article class="place" aria-label="Карточка">
-              <img class="place__image" src="./images/kirill-pershin-1404681-unsplash.jpg" alt="Фотография: гора в далеке на заднем плане.">
-              <button class="place__delete-button" type="button" aria-label="Удалить"></button>
-              <div class="place__title-box">
-                <h2 class="place__title">Гора Эльбрус</h2>
-                <button class="place__like-button" type="button" aria-label="Лайк"></button>
-              </div>
-            </article>
-          </li>
-          <li class="unmarked-list__item">
-            <article class="place" aria-label="Карточка">
-              <img class="place__image" src="./images/kirill-pershin-1556355-unsplash.jpg" alt="Фотография: гора Белалакая - вершина западной части главного хребта Большого Кавказа.">
-              <button class="place__delete-button" type="button" aria-label="Удалить"></button>
-              <div class="place__title-box">
-                <h2 class="place__title">Домбай</h2>
-                <button class="place__like-button" type="button" aria-label="Лайк"></button>
-              </div>
-            </article>
-          </li>
-          <li class="unmarked-list__item">
-            <article class="place" aria-label="Карточка">
-              <img class="place__image" src="./images/kirill-pershin-1088404-unsplash.jpg" alt="Фотография: древний христианский храм в Карачаево-Черкесии">
-              <button class="place__delete-button" type="button" aria-label="Удалить"></button>
-              <div class="place__title-box">
-                <h2 class="place__title">Карачаево-Черкессия</h2>
-                <button class="place__like-button" type="button" aria-label="Лайк"></button>
-              </div>
-            </article>
-          </li> -->
+
         </ul>
       </article>
 
     </main>
 
-    <!--  секция footer  -->
+    <!-- секция footer -->
     <footer class="footer">
       <p class="footer__copyright" lang="en">&copy; 2020 Mesto Russia</p>
     </footer>
 
-    <!-- ФОРМЫ (невидимая область) -->
+    <!-- МОДАЛЬНЫЕ ОКНА -->
 
-    <!--  секция popup  -->
+    <!-- редактирование профиля -->
     <div class="popup popup_disappearance popup_edit-profile">
       <div class="popup__container popup__container_edit-profile">
         <h3 class="popup__title popup__title_edit-profile">Редактировать профиль</h3>
@@ -131,6 +82,8 @@
         </form>
       </div>
     </div>
+
+    <!-- добавление новых карточек -->
     <div class="popup popup_disappearance popup_new-place">
       <div class="popup__container popup__container_new-place">
         <h3 class="popup__title popup__title_new-place">Новое место</h3>
@@ -142,15 +95,17 @@
         </form>
       </div>
     </div>
+
+    <!-- окно просмотра крупной картинки -->
     <div class="popup popup_disappearance popup_increased-image">
-      <!-- <div class="popup__big-image-container">
-        <button class="popup__close-button popup__close-button_big-image" type="button" aria-label="Закрыть"></button>
-        <img class="popup__big-image" src="https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg" alt="Фотография: достопримичетельность (ландшафт, пейзаж, строение)">
-        <h2 class="popup__title-big-image">Архыз</h2>
-      </div> -->
+
     </div>
+
   </div>
 
+    <!-- ШАБЛОНЫ -->
+
+    <!-- карточка -->
   <template id="place-template">
     <li class="unmarked-list__item elements__place-item">
       <article class="place" aria-label="Карточка">
@@ -166,13 +121,14 @@
     </li>
   </template>
 
-  <template id="big-image-container-template">
+    <!-- фотография в крупном размере -->
+    <template id="big-image-container-template">
     <div class="popup__big-image-container">
       <button class="popup__close-button popup__close-button_big-image" type="button" aria-label="Закрыть"></button>
       <img class="popup__big-image" src="#" alt="Фотография: достопримичетельность (ландшафт, пейзаж, строение)">
       <h2 class="popup__title-big-image"></h2>
     </div>
-</template>
+  </template>
 
   <script src="./scripts/index.js"></script>
 
