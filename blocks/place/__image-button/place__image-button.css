@@ -1,0 +1,11 @@
+.place__image-button {
+  max-width: 282px;
+  height: 282px;
+  margin: 0;
+  padding: 0;
+  color: transparent;
+  background-color: transparent;
+  border: none;
+  border-radius: 10px 10px 0 0;
+  cursor: pointer;
+}

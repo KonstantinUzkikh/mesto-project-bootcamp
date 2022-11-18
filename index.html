@@ -41,15 +41,16 @@
             <p class="personal-card__activity">Исследователь океана</p>
           </div>
         </div>
-        <button class="profile__add-button" type="button" aria-label="Добавить"></button>
+        <button class="profile__add-new-place-button" type="button" aria-label="Добавить"></button>
       </section>
 
       <!-- секция elements -->
       <article class="elements" aria-label="Картотека">
         <ul class="unmarked-list elements__places-list">
-          <li class="unmarked-list__item">
+          <li class="unmarked-list__item elements__place-item">
             <article class="place" aria-label="Карточка">
               <img class="place__image" src="./images/kirill-pershin-1088404-unsplash.jpg" alt="Фотография: древний христианский храм в Карачаево-Черкесии">
+              <button class="place__delete-button" type="button" aria-label="Удалить"></button>
               <div class="place__title-box">
                 <h2 class="place__title">Карачаевск</h2>
                 <button class="place__like-button place__like-button_active" type="button" aria-label="Лайк"></button>
@@ -59,6 +60,7 @@
           <li class="unmarked-list__item">
             <article class="place" aria-label="Карточка">
               <img class="place__image" src="./images/kirill-pershin-1404681-unsplash.jpg" alt="Фотография: гора в далеке на заднем плане.">
+              <button class="place__delete-button" type="button" aria-label="Удалить"></button>
               <div class="place__title-box">
                 <h2 class="place__title">Гора Эльбрус</h2>
                 <button class="place__like-button" type="button" aria-label="Лайк"></button>
@@ -68,6 +70,7 @@
           <li class="unmarked-list__item">
             <article class="place" aria-label="Карточка">
               <img class="place__image" src="./images/kirill-pershin-1556355-unsplash.jpg" alt="Фотография: гора Белалакая - вершина западной части главного хребта Большого Кавказа.">
+              <button class="place__delete-button" type="button" aria-label="Удалить"></button>
               <div class="place__title-box">
                 <h2 class="place__title">Домбай</h2>
                 <button class="place__like-button" type="button" aria-label="Лайк"></button>
@@ -77,6 +80,7 @@
           <li class="unmarked-list__item">
             <article class="place" aria-label="Карточка">
               <img class="place__image" src="./images/kirill-pershin-1404681-unsplash.jpg" alt="Фотография: гора в далеке на заднем плане.">
+              <button class="place__delete-button" type="button" aria-label="Удалить"></button>
               <div class="place__title-box">
                 <h2 class="place__title">Гора Эльбрус</h2>
                 <button class="place__like-button" type="button" aria-label="Лайк"></button>
@@ -86,6 +90,7 @@
           <li class="unmarked-list__item">
             <article class="place" aria-label="Карточка">
               <img class="place__image" src="./images/kirill-pershin-1556355-unsplash.jpg" alt="Фотография: гора Белалакая - вершина западной части главного хребта Большого Кавказа.">
+              <button class="place__delete-button" type="button" aria-label="Удалить"></button>
               <div class="place__title-box">
                 <h2 class="place__title">Домбай</h2>
                 <button class="place__like-button" type="button" aria-label="Лайк"></button>
@@ -95,6 +100,7 @@
           <li class="unmarked-list__item">
             <article class="place" aria-label="Карточка">
               <img class="place__image" src="./images/kirill-pershin-1088404-unsplash.jpg" alt="Фотография: древний христианский храм в Карачаево-Черкесии">
+              <button class="place__delete-button" type="button" aria-label="Удалить"></button>
               <div class="place__title-box">
                 <h2 class="place__title">Карачаево-Черкессия</h2>
                 <button class="place__like-button" type="button" aria-label="Лайк"></button>
@@ -114,18 +120,62 @@
     <!-- ФОРМЫ (невидимая область) -->
 
     <!--  секция popup  -->
-    <div class="popup popup_opened">
-      <div class="popup__container">
-        <h3 class="popup__title">Редактировать профиль</h3>
-        <button class="popup__close-button" type="button" aria-label="Закрыть"></button>
-        <form class="popup__form" name="formEditProfile" action="" method="get" accept-charset="UNKNOWN">
-          <input class="popup__input popup__input_name" type="text" name="name" value="Жак-Ив Кусто" placeholder="Имя">
-          <input class="popup__input popup__input_activity" type="text" name="activity" value="Исследователь океана" placeholder="Деятельность">
-          <button type="submit" value="Сохранить" class="popup__save-button">Сохранить</button>
+    <div class="popup popup_disappearance popup_edit-profile">
+      <div class="popup__container popup__container_edit-profile">
+        <h3 class="popup__title popup__title_edit-profile">Редактировать профиль</h3>
+        <button class="popup__close-button popup__close-button_edit-profile" form="form_edit-profile" type="button" aria-label="Закрыть"></button>
+        <form class="popup__form popup__form_edit-profile" id="form_edit-profile" name="formEditProfile" method="get">
+          <input class="popup__input popup__input_edit-profile-name" type="text" name="name" value="Жак-Ив Кусто" placeholder="Имя">
+          <input class="popup__input popup__input_edit-profile-activity" type="text" name="activity" value="Исследователь океана" placeholder="Деятельность">
+          <button class="popup__save-button popup__save-button_edit-profile" type="submit">Сохранить</button>
         </form>
       </div>
     </div>
-
+    <div class="popup popup_disappearance popup_new-place">
+      <div class="popup__container popup__container_new-place">
+        <h3 class="popup__title popup__title_new-place">Новое место</h3>
+        <button class="popup__close-button popup__close-button_new-place" form="form_new-place" type="reset" aria-label="Закрыть"></button>
+        <form class="popup__form popup__form_new-place" id="form_new-place" name="formAddNewPlace" method="get">
+          <input class="popup__input popup__input_new-place-name" type="text" name="place-name" placeholder="Название">
+          <input class="popup__input popup__input_new-place-url" type="url" name="place-url" placeholder="Ссылка на картинку">
+          <button class="popup__save-button popup__save-button_new-place" type="submit">Сохранить</button>
+        </form>
+      </div>
+    </div>
+    <div class="popup popup_disappearance popup_increased-image">
+      <div class="popup__big-image-container">
+        <button class="popup__close-button popup__close-button_big-image" type="button" aria-label="Закрыть"></button>
+        <img class="popup__big-image" src="https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg" alt="Фотография: достопримичетельность (ландшафт, пейзаж, строение)">
+        <h2 class="popup__title-big-image">Архыз</h2>
+      </div>
+    </div>
   </div>
+
+  <!--
+  <template id="place-template">
+    <li class="unmarked-list__item elements__place-item">
+      <article class="place" aria-label="Карточка">
+        <button class="place__image-button" type="button" aria-label="Увеличить">
+          <img class="place__image" src="#" alt="Фотография: достопримичетельность (ландшафт, пейзаж, строение)">
+        </button>
+        <button class="place__delete-button" type="button" aria-label="Удалить"></button>
+        <div class="place__title-box">
+          <h2 class="place__title"></h2>
+          <button class="place__like-button" type="button" aria-label="Лайк"></button>
+        </div>
+      </article>
+    </li>
+  </template>
+
+  <template id="big-image-container-template">
+    <div class="popup__big-image-container">
+      <button class="popup__close-button popup__close-button_big-image" type="button" aria-label="Закрыть"></button>
+      <img class="popup__big-image" src="#" alt="Фотография: достопримичетельность (ландшафт, пейзаж, строение)">
+      <h2 class="popup__title-big-image"></h2>
+    </div>
+</template>
+
+ <script src="./scripts/index.js"></script> -->
+
 </body>
 </html>

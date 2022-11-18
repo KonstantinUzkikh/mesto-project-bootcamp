@@ -1,0 +1,7 @@
+.popup__big-image-container {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  justify-content: space-between;
+  background: transparent;
+}
