@@ -8,6 +8,8 @@ const personalCardEditButton = personalCard.querySelector('.personal-card__edit-
 const popupEditProfile = document.querySelector('.popup_edit-profile');
 const popupCloseButtonEditProfile = popupEditProfile.querySelector('.popup__close-button_edit-profile');
 const popupFormEditProfile = popupEditProfile.querySelector('.popup__form_edit-profile');
+const inputName = document.querySelector('.popup__input_edit-profile-name');
+const inputActivity = document.querySelector('.popup__input_edit-profile-activity');
 
 function saveProfile (name, activity) {
   personalCardName.textContent = name;
@@ -22,8 +24,8 @@ function readProfile (name, activity) {
 personalCardEditButton.addEventListener('click', function (et) {
   popupEditProfile.classList.toggle('popup_disappearance');
   popupEditProfile.classList.toggle('popup_appearance');
-  const inputName = document.querySelector('.popup__input_edit-profile-name');
-  const inputActivity = document.querySelector('.popup__input_edit-profile-activity');
+  //const inputName = document.querySelector('.popup__input_edit-profile-name');
+  //const inputActivity = document.querySelector('.popup__input_edit-profile-activity');
   readProfile (inputName.value, inputActivity.value);
 });
 
@@ -34,8 +36,8 @@ popupCloseButtonEditProfile.addEventListener('click', function() {
 
 popupFormEditProfile.addEventListener('submit', function (evt) {
   evt.preventDefault();
-  const inputName = document.querySelector('.popup__input_edit-profile-name');
-  const inputActivity = document.querySelector('.popup__input_edit-profile-activity');
+  //const inputName = document.querySelector('.popup__input_edit-profile-name');
+  //const inputActivity = document.querySelector('.popup__input_edit-profile-activity');
   saveProfile(inputName.value, inputActivity.value);
   popupEditProfile.classList.toggle('popup_appearance');
   popupEditProfile.classList.toggle('popup_disappearance');
