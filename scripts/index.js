@@ -59,33 +59,37 @@ const popupCloseButtonBigImage = bigImageContainer.querySelector('.popup__close-
 const popupBigImage = bigImageContainer.querySelector('.popup__big-image');
 const popupTitleBigImage = bigImageContainer.querySelector('.popup__title-big-image');
 
-function openBigImage (placeName, placeUrl) {
-  popupTitleBigImage.textContent = placeName;
-  popupBigImage.src = placeUrl;
-  popupBigImage.alt='Фотография: ' + placeName;
+function openBigImage (name, url) {
+  popupTitleBigImage.textContent = name;
+  popupBigImage.src = url;
+  popupBigImage.alt='Фотография: ' + name;
   popupIncreasedImage.classList.toggle('popup_disappearance');
   popupIncreasedImage.classList.toggle('popup_appearance');
 }
 
-function closeBigImage (bigImageContainer) {
+function closeBigImage () {
   popupIncreasedImage.classList.toggle('popup_appearance');
   popupIncreasedImage.classList.toggle('popup_disappearance');
 }
 
-function addPlace(placeName, placeUrl) {
+function createPlace (name, url) {
   const placeItem = placeTemplate.querySelector('.elements__place-item').cloneNode(true);
   const placeImage = placeItem.querySelector('.place__image');
   const placeTitle = placeItem.querySelector('.place__title');
   const placeLikeButton = placeItem.querySelector('.place__like-button');
   const placeDeleteButton = placeItem.querySelector('.place__delete-button');
   const placeImageButton = placeItem.querySelector('.place__image-button');
-  placeTitle.textContent = placeName;
-  placeImage.src = placeUrl;
-  placeImage.alt='Фотография: ' + placeName;
-  elementsPlacesLists.prepend(placeItem);
+  placeTitle.textContent = name;
+  placeImage.src = url;
+  placeImage.alt='Фотография: ' + name;
   placeLikeButton.addEventListener('click', () => {placeLikeButton.classList.toggle('place__like-button_active')});
   placeDeleteButton.addEventListener('click', () => {placeItem.remove()});
-  placeImageButton.addEventListener('click', () => {openBigImage(placeName, placeUrl)});
+  placeImageButton.addEventListener('click', () => {openBigImage(name, url)});
+  return placeItem;
+}
+
+function addPlace(item) {
+  elementsPlacesLists.prepend(item);
 }
 
 profileAddNewPlaceButton.addEventListener('click', function() {
@@ -101,7 +105,7 @@ popupFormNewPlace.addEventListener('reset', function(evt) {
 
 popupFormNewPlace.addEventListener('submit', function (evt) {
   evt.preventDefault();
-  addPlace(placeName.value, placeUrl.value);
+  addPlace(createPlace(placeName.value, placeUrl.value));
   popupNewPlace.classList.toggle('popup_appearance');
   popupNewPlace.classList.toggle('popup_disappearance');
   placeName.value = '';
@@ -147,5 +151,5 @@ popupCloseButtonBigImage.addEventListener('click', () => {closeBigImage(bigImage
   ];
 
 for (let i = 0; i < initialCardsPlaces.length; i++) {
-  addPlace(initialCardsPlaces[i].name, initialCardsPlaces[i].link)
+  addPlace(createPlace(initialCardsPlaces[i].name, initialCardsPlaces[i].link));
 }
