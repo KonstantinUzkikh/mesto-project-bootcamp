@@ -20,14 +20,12 @@
 
     "МОДАЛЬНЫЕ ОКНА"
     Реализованы для отображения в режиме модальных окон:
-    - форма редактирования профиля - class="popup",
-    - форма ввода новых карточек -
+    - форма редактирования профиля,
+    - форма ввода новых карточек,
     - окно просмотра фотографии в крупном размере.
 
     "ШАБЛОНЫ"
-    Реализованы html-шаблоны для загрузки:
-    - карточек,
-    - фотографии в крупном размере.
+    Реализован html-шаблон для загрузки карточек.
 
     Интерактивность сайта реализована с использованием JS.
     -->
@@ -98,7 +96,11 @@
 
     <!-- окно просмотра крупной картинки -->
     <div class="popup popup_disappearance popup_increased-image">
-
+      <div class="popup__big-image-container">
+        <button class="popup__close-button popup__close-button_big-image" type="button" aria-label="Закрыть"></button>
+        <img class="popup__big-image" src="#" alt="Фотография: достопримичетельность (ландшафт, пейзаж, строение)">
+        <h2 class="popup__title-big-image"></h2>
+      </div>
     </div>
 
   </div>
@@ -119,15 +121,6 @@
         </div>
       </article>
     </li>
-  </template>
-
-    <!-- фотография в крупном размере -->
-    <template id="big-image-container-template">
-    <div class="popup__big-image-container">
-      <button class="popup__close-button popup__close-button_big-image" type="button" aria-label="Закрыть"></button>
-      <img class="popup__big-image" src="#" alt="Фотография: достопримичетельность (ландшафт, пейзаж, строение)">
-      <h2 class="popup__title-big-image"></h2>
-    </div>
   </template>
 
   <script src="./scripts/index.js"></script>

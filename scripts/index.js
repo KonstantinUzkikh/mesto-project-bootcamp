@@ -24,8 +24,6 @@ function readProfile (name, activity) {
 personalCardEditButton.addEventListener('click', function (et) {
   popupEditProfile.classList.toggle('popup_disappearance');
   popupEditProfile.classList.toggle('popup_appearance');
-  //const inputName = document.querySelector('.popup__input_edit-profile-name');
-  //const inputActivity = document.querySelector('.popup__input_edit-profile-activity');
   readProfile (inputName.value, inputActivity.value);
 });
 
@@ -36,8 +34,6 @@ popupCloseButtonEditProfile.addEventListener('click', function() {
 
 popupFormEditProfile.addEventListener('submit', function (evt) {
   evt.preventDefault();
-  //const inputName = document.querySelector('.popup__input_edit-profile-name');
-  //const inputActivity = document.querySelector('.popup__input_edit-profile-activity');
   saveProfile(inputName.value, inputActivity.value);
   popupEditProfile.classList.toggle('popup_appearance');
   popupEditProfile.classList.toggle('popup_disappearance');
@@ -47,37 +43,36 @@ popupFormEditProfile.addEventListener('submit', function (evt) {
 
 const profileAddNewPlaceButton = document.querySelector('.profile__add-new-place-button');
 
+const placeTemplate = document.querySelector('#place-template').content;
 const elementsPlacesLists = document.querySelector('.elements__places-list');
 
 const popupNewPlace = document.querySelector('.popup_new-place');
 const popupCloseButtonNewPlace = popupNewPlace.querySelector('.popup__close-button_new-place');
 const popupFormNewPlace = popupNewPlace.querySelector('.popup__form_new-place');
+const placeName = document.querySelector('.popup__input_new-place-name');
+const placeUrl = document.querySelector('.popup__input_new-place-url');
 
 const popupIncreasedImage = document.querySelector('.popup_increased-image');
+const bigImageContainer = document.querySelector('.popup__big-image-container');
+
+const popupCloseButtonBigImage = bigImageContainer.querySelector('.popup__close-button_big-image');
+const popupBigImage = bigImageContainer.querySelector('.popup__big-image');
+const popupTitleBigImage = bigImageContainer.querySelector('.popup__title-big-image');
 
 function openBigImage (placeName, placeUrl) {
-  const bigImageContainerTemplate = document.querySelector('#big-image-container-template').content;
-  const bigImageContainerItem = bigImageContainerTemplate.querySelector('.popup__big-image-container').cloneNode(true);
-  const popupBigImage = bigImageContainerItem.querySelector('.popup__big-image');
-  const popupTitleBigImage = bigImageContainerItem.querySelector('.popup__title-big-image');
-  const popupCloseButtonBigImage = bigImageContainerItem.querySelector('.popup__close-button_big-image');
   popupTitleBigImage.textContent = placeName;
   popupBigImage.src = placeUrl;
   popupBigImage.alt='Фотография: ' + placeName;
-  popupIncreasedImage.append(bigImageContainerItem);
   popupIncreasedImage.classList.toggle('popup_disappearance');
   popupIncreasedImage.classList.toggle('popup_appearance');
-  popupCloseButtonBigImage.addEventListener('click', () => {closeBigImage(bigImageContainerItem)});
 }
 
-function closeBigImage (bigImageContainerItem) {
+function closeBigImage (bigImageContainer) {
   popupIncreasedImage.classList.toggle('popup_appearance');
   popupIncreasedImage.classList.toggle('popup_disappearance');
-  bigImageContainerItem.remove();
 }
 
 function addPlace(placeName, placeUrl) {
-  const placeTemplate = document.querySelector('#place-template').content;
   const placeItem = placeTemplate.querySelector('.elements__place-item').cloneNode(true);
   const placeImage = placeItem.querySelector('.place__image');
   const placeTitle = placeItem.querySelector('.place__title');
@@ -98,21 +93,22 @@ profileAddNewPlaceButton.addEventListener('click', function() {
   popupNewPlace.classList.toggle('popup_appearance');
 });
 
-popupFormNewPlace.addEventListener('reset', function() {
+popupFormNewPlace.addEventListener('reset', function(evt) {
+  evt.preventDefault();
   popupNewPlace.classList.toggle('popup_appearance');
   popupNewPlace.classList.toggle('popup_disappearance');
 });
 
 popupFormNewPlace.addEventListener('submit', function (evt) {
   evt.preventDefault();
-  const placeName = document.querySelector('.popup__input_new-place-name');
-  const placeUrl = document.querySelector('.popup__input_new-place-url');
   addPlace(placeName.value, placeUrl.value);
   popupNewPlace.classList.toggle('popup_appearance');
   popupNewPlace.classList.toggle('popup_disappearance');
   placeName.value = '';
   placeUrl.value = '';
 });
+
+popupCloseButtonBigImage.addEventListener('click', () => {closeBigImage(bigImageContainer)});
 
 // initialization
 
