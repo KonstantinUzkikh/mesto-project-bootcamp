@@ -2,7 +2,6 @@
 
 function openPopup(popup) {
   popup.classList.add('popup_opened');
-  console.log(popup.className);
 }
 
 function closePopup(popup) {
@@ -30,14 +29,13 @@ personalCardEditButton.addEventListener('click', function () {
 });
 
 popupFormEditProfile.addEventListener('reset', function(evt) {
-  evt.preventDefault();
   popupEditProfile.classList.toggle('popup_appearance');
   popupEditProfile.classList.toggle('popup_disappearance');
   closePopup(popupEditProfile);
 });
 
 popupFormEditProfile.addEventListener('submit', function (evt) {
-  evt.preventDefault();
+  evt.preventDefault(evt);
   personalCardName.textContent = inputName.value;
   personalCardActivity.textContent = inputActivity.value;
   popupEditProfile.classList.toggle('popup_appearance');
@@ -106,17 +104,19 @@ profileAddNewPlaceButton.addEventListener('click', function() {
 });
 
 popupFormNewPlace.addEventListener('reset', function(evt) {
-  evt.preventDefault();
+  evt.preventDefault(evt);
   popupNewPlace.classList.toggle('popup_appearance');
   popupNewPlace.classList.toggle('popup_disappearance');
   closePopup(popupNewPlace);
 });
 
 popupFormNewPlace.addEventListener('submit', function (evt) {
-  evt.preventDefault();
+  evt.preventDefault(evt);
   addPlace(createPlace(placeName.value, placeUrl.value));
   popupNewPlace.classList.toggle('popup_appearance');
   popupNewPlace.classList.toggle('popup_disappearance');
+  //evt.target.reset();
+  //placeUrl.reset();
   placeName.value = '';
   placeUrl.value = '';
   closePopup(popupNewPlace);
