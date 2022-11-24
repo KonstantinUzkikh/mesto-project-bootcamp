@@ -72,11 +72,17 @@
     <div class="popup popup_disappearance popup_edit-profile">
       <div class="popup__container popup__container_edit-profile">
         <h3 class="popup__title popup__title_edit-profile">Редактировать профиль</h3>
-        <button class="popup__close-button popup__close-button_edit-profile" form="form_edit-profile" type="reset" aria-label="Закрыть"></button>
+        <button class="popup__close-button popup__close-button_edit-profile" form="form_edit-profile" type="button" aria-label="Закрыть"></button>
         <form class="popup__form popup__form_edit-profile" id="form_edit-profile" name="formEditProfile" method="get">
-          <input class="popup__input popup__input_edit-profile-name" type="text" name="name" value="Жак-Ив Кусто" placeholder="Имя">
-          <input class="popup__input popup__input_edit-profile-activity" type="text" name="activity" value="Исследователь океана" placeholder="Деятельность">
-          <button class="popup__save-button popup__save-button_edit-profile" type="submit">Сохранить</button>
+          <label class="popup__form-field">
+            <input class="popup__input popup__input_edit-profile-name" type="text" name="name" value="Жак-Ив Кусто" placeholder="Имя" minlength="2" maxlength="40" required>
+            <span class="popup__input-error popup__profile-name-input-error"></span>
+          </label>
+          <label class="popup__form-field">
+            <input class="popup__input popup__input_edit-profile-activity" type="text" name="activity" value="Исследователь океана" placeholder="Деятельность" minlength="2" maxlength="200" required>
+            <span class="popup__input-error popup__profile-activity-input-error"></span>
+          </label>
+          <button class="popup__save-button popup__save-button_disabled popup__save-button_edit-profile" type="submit">Сохранить</button>
         </form>
       </div>
     </div>
@@ -85,11 +91,17 @@
     <div class="popup popup_disappearance popup_new-place">
       <div class="popup__container popup__container_new-place">
         <h3 class="popup__title popup__title_new-place">Новое место</h3>
-        <button class="popup__close-button popup__close-button_new-place" form="form_new-place" type="reset" aria-label="Закрыть"></button>
+        <button class="popup__close-button popup__close-button_new-place" form="form_new-place" type="button" aria-label="Закрыть"></button>
         <form class="popup__form popup__form_new-place" id="form_new-place" name="formAddNewPlace" method="get">
-          <input class="popup__input popup__input_new-place-name" type="text" name="place-name" placeholder="Название">
-          <input class="popup__input popup__input_new-place-url" type="url" name="place-url" placeholder="Ссылка на картинку">
-          <button class="popup__save-button popup__save-button_new-place" type="submit">Сохранить</button>
+          <label class="popup__form-field">
+            <input class="popup__input popup__input_new-place-name" type="text" name="place-name" placeholder="Название" required>
+            <span class="popup__input-error popup__place-name-input-error"></span>
+          </label>
+          <label class="popup__form-field">
+            <input class="popup__input popup__input_new-place-url" type="url" name="place-url" placeholder="Ссылка на картинку" required>
+            <span class="popup__input-error popup__place-url-input-error"></span>
+          </label>
+          <button class="popup__save-button popup__save-button_disabled popup__save-button_new-place" type="submit">Сохранить</button>
         </form>
       </div>
     </div>
