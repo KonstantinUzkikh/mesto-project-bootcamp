@@ -11,23 +11,23 @@
   <div class="page">
 
     <!--
-    Страница состоит из трех частей:
-    видимая область - "ОСНОВНАЯ СТРАНИЦА" и "МОДАЛЬНЫЕ ОКНА",
-    невидимая область - "ШАБЛОНЫ".
+    Страница состоит из трех частей: "ОСНОВНАЯ СТРАНИЦА", "МОДАЛЬНЫЕ ОКНА", "ШАБЛОНЫ".
 
-    "ОСНОВНАЯ СТРАНИЦА".
-    Реализована "пассивная" часть сайта: шапка, отображение профиля и подвал.
+      *ОСНОВНАЯ СТРАНИЦА*
+    Реализована "пассивная" часть сайта: шапка, отображение профиля, картотека и подвал.
+    Первоначальный набор карточек загружается с использованием JS.
 
-    "МОДАЛЬНЫЕ ОКНА"
+      *МОДАЛЬНЫЕ ОКНА*
     Реализованы для отображения в режиме модальных окон:
     - форма редактирования профиля,
     - форма ввода новых карточек,
     - окно просмотра фотографии в крупном размере.
 
-    "ШАБЛОНЫ"
+      *ШАБЛОНЫ*
     Реализован html-шаблон для загрузки карточек.
 
     Интерактивность сайта реализована с использованием JS.
+    На данном этапе разработки сайта не реализовано его взаимодействие с сервером для загрузки и выгрузки данных.
     -->
 
     <!-- ОСНОВНАЯ СТРАНИЦА -->
@@ -49,7 +49,7 @@
             <p class="personal-card__activity">Исследователь океана</p>
           </div>
         </div>
-        <button class="profile__add-new-place-button" type="button" aria-label="Добавить"></button>
+        <button class="profile__add-place-button" type="button" aria-label="Добавить"></button>
       </section>
 
       <!-- секция elements -->
@@ -69,39 +69,39 @@
     <!-- МОДАЛЬНЫЕ ОКНА -->
 
     <!-- редактирование профиля -->
-    <div class="popup popup_disappearance popup_edit-profile">
-      <div class="popup__container popup__container_edit-profile">
-        <h3 class="popup__title popup__title_edit-profile">Редактировать профиль</h3>
-        <button class="popup__close-button popup__close-button_edit-profile" form="form_edit-profile" type="button" aria-label="Закрыть"></button>
-        <form class="popup__form popup__form_edit-profile" id="form_edit-profile" name="formEditProfile" method="get">
+    <div class="popup popup_disappearance popup_profile">
+      <div class="popup__container popup__container_profile">
+        <h3 class="popup__title popup__title_profile">Редактировать профиль</h3>
+        <button class="popup__close-button popup__close-button_profile" form="form_profile" type="button" aria-label="Закрыть"></button>
+        <form class="popup__form popup__form_profile" id="form_profile" name="form_profile" method="get" novalidate>
           <label class="popup__form-field">
-            <input class="popup__input popup__input_edit-profile-name" type="text" name="name" value="Жак-Ив Кусто" placeholder="Имя" minlength="2" maxlength="40" required>
-            <span class="popup__input-error popup__profile-name-input-error"></span>
+            <input class="popup__input popup__input_profile-name" type="text" id="profile-name" name="profile-name" value="Жак-Ив Кусто" placeholder="Имя" minlength="2" maxlength="40" required>
+            <span class="popup__input-error popup__input-error_profile-name"></span>
           </label>
           <label class="popup__form-field">
-            <input class="popup__input popup__input_edit-profile-activity" type="text" name="activity" value="Исследователь океана" placeholder="Деятельность" minlength="2" maxlength="200" required>
-            <span class="popup__input-error popup__profile-activity-input-error"></span>
+            <input class="popup__input popup__input_profile-activity" type="text" id="profile-activity" name="profile-activity" value="Исследователь океана" placeholder="Деятельность" minlength="2" maxlength="200" required>
+            <span class="popup__input-error popup__input-error_profile-activity"></span>
           </label>
-          <button class="popup__save-button popup__save-button_disabled popup__save-button_edit-profile" type="submit">Сохранить</button>
+          <button class="popup__save-button popup__save-button_profile" type="submit">Сохранить</button>
         </form>
       </div>
     </div>
 
     <!-- добавление новых карточек -->
-    <div class="popup popup_disappearance popup_new-place">
-      <div class="popup__container popup__container_new-place">
-        <h3 class="popup__title popup__title_new-place">Новое место</h3>
-        <button class="popup__close-button popup__close-button_new-place" form="form_new-place" type="button" aria-label="Закрыть"></button>
-        <form class="popup__form popup__form_new-place" id="form_new-place" name="formAddNewPlace" method="get">
+    <div class="popup popup_disappearance popup_place">
+      <div class="popup__container popup__container_place">
+        <h3 class="popup__title popup__title_place">Новое место</h3>
+        <button class="popup__close-button popup__close-button_place" form="form_place" type="button" aria-label="Закрыть"></button>
+        <form class="popup__form popup__form_place" id="form_place" name="form_place" method="get" novalidate>
           <label class="popup__form-field">
-            <input class="popup__input popup__input_new-place-name" type="text" name="place-name" placeholder="Название" required>
-            <span class="popup__input-error popup__place-name-input-error"></span>
+            <input class="popup__input popup__input_place-name" type="text" id="place-name" name="place-name" placeholder="Название" minlength="2" maxlength="30" required>
+            <span class="popup__input-error popup__input-error_place-name"></span>
           </label>
           <label class="popup__form-field">
-            <input class="popup__input popup__input_new-place-url" type="url" name="place-url" placeholder="Ссылка на картинку" required>
-            <span class="popup__input-error popup__place-url-input-error"></span>
+            <input class="popup__input popup__input_place-url" type="url" id="place-url" name="place-url" placeholder="Ссылка на картинку" required>
+            <span class="popup__input-error popup__input-error_place-url"></span>
           </label>
-          <button class="popup__save-button popup__save-button_disabled popup__save-button_new-place" type="submit">Сохранить</button>
+          <button class="popup__save-button popup__save-button_disabled popup__save-button_place" type="submit" disabled>Сохранить</button>
         </form>
       </div>
     </div>
@@ -135,7 +135,9 @@
     </li>
   </template>
 
-  <script src="./scripts/index.js"></script>
+  <script type="module" src="./scripts/index.js"></script>
+  <script type="module" src="./scripts/components/modal.js"></script>
+  <script type="module" src="./scripts/components/validate.js"></script>
 
 </body>
 </html>

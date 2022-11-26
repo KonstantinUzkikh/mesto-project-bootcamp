@@ -1,27 +1,16 @@
+import {openPopup, closePopup} from './components/modal.js';
+import {enableValidation, resetInputErrors, setButtonActivity} from './components/validate.js';
+import {createPlace, addPlace} from './components/place.js';
+
 // popup events
 
 const popups = document.querySelectorAll('.popup');
 const closeButtons = document.querySelectorAll('.popup__close-button');
 
-function openPopup(popup) {
-  popup.classList.add('popup_opened');
-  popup.classList.toggle('popup_disappearance');
-  popup.classList.toggle('popup_appearance');
-}
-
-function closePopup(popup) {
-  popup.classList.toggle('popup_appearance');
-  popup.classList.toggle('popup_disappearance');
-  popup.classList.remove('popup_opened');
-}
-
 popups.forEach((popup) => {
   popup.addEventListener('click', function (evt) {
     if (evt.target.classList.contains('popup')) {closePopup(popup)}
   });
-  //popup.addEventListener('keydown', function (evt) {
-  //  if (evt.key = 'Escape') {closePopup(popup)}
-  //});
 });
 
 closeButtons.forEach((button) => {
@@ -36,80 +25,59 @@ const personalCardName = personalCard.querySelector('.personal-card__name');
 const personalCardActivity = personalCard.querySelector('.personal-card__activity');
 const personalCardEditButton = personalCard.querySelector('.personal-card__edit-button');
 
-const popupEditProfile = document.querySelector('.popup_edit-profile');
-const popupFormEditProfile = popupEditProfile.querySelector('.popup__form_edit-profile');
-const inputName = document.querySelector('.popup__input_edit-profile-name');
-const inputActivity = document.querySelector('.popup__input_edit-profile-activity');
+const popupProfile = document.querySelector('.popup_profile');
+const popupFormProfile = popupProfile.querySelector('.popup__form_profile');
+const inputName = popupFormProfile.querySelector('.popup__input_profile-name');
+const inputActivity = popupFormProfile.querySelector('.popup__input_profile-activity');
+const saveButtonProfile = popupFormProfile.querySelector('.popup__save-button_profile');
 
 personalCardEditButton.addEventListener('click', function () {
   inputName.value = personalCardName.textContent;
   inputActivity.value = personalCardActivity.textContent;
-  openPopup(popupEditProfile);
+  resetInputErrors(popupFormProfile);
+  setButtonActivity(saveButtonProfile, true);
+  openPopup(popupProfile);
 });
 
-popupFormEditProfile.addEventListener('submit', function (evt) {
+popupFormProfile.addEventListener('submit', function (evt) {
   evt.preventDefault(evt);
   personalCardName.textContent = inputName.value;
   personalCardActivity.textContent = inputActivity.value;
-  closePopup(popupEditProfile);
+  closePopup(popupProfile);
 });
 
 // places events
 
-const profileAddNewPlaceButton = document.querySelector('.profile__add-new-place-button');
+const addPlaceButton = document.querySelector('.profile__add-place-button');
 
-const placeTemplate = document.querySelector('#place-template').content;
-const elementsPlacesLists = document.querySelector('.elements__places-list');
+const popupPlace = document.querySelector('.popup_place');
+const popupFormPlace = popupPlace.querySelector('.popup__form_place');
+const placeName = popupFormPlace.querySelector('.popup__input_place-name');
+const placeUrl = popupFormPlace.querySelector('.popup__input_place-url');
+const saveButtonPlace = popupFormPlace.querySelector('.popup__save-button_place');
 
-const popupNewPlace = document.querySelector('.popup_new-place');
-const popupFormNewPlace = popupNewPlace.querySelector('.popup__form_new-place');
-const placeName = document.querySelector('.popup__input_new-place-name');
-const placeUrl = document.querySelector('.popup__input_new-place-url');
+addPlaceButton.addEventListener('click', () => openPopup(popupPlace));
 
-const popupIncreasedImage = document.querySelector('.popup_increased-image');
-
-const popupCloseButtonBigImage = popupIncreasedImage.querySelector('.popup__close-button_big-image');
-const popupBigImage = popupIncreasedImage.querySelector('.popup__big-image');
-const popupTitleBigImage = popupIncreasedImage.querySelector('.popup__title-big-image');
-
-function openBigImage (name, url) {
-  popupTitleBigImage.textContent = name;
-  popupBigImage.src = url;
-  popupBigImage.alt='Фотография: ' + name;
-  openPopup(popupIncreasedImage);
-}
-
-function createPlace (name, url) {
-  const placeItem = placeTemplate.querySelector('.elements__place-item').cloneNode(true);
-  const placeImage = placeItem.querySelector('.place__image');
-  const placeTitle = placeItem.querySelector('.place__title');
-  const placeLikeButton = placeItem.querySelector('.place__like-button');
-  const placeDeleteButton = placeItem.querySelector('.place__delete-button');
-  const placeImageButton = placeItem.querySelector('.place__image-button');
-  placeTitle.textContent = name;
-  placeImage.src = url;
-  placeImage.alt='Фотография: ' + name;
-  placeLikeButton.addEventListener('click', () => placeLikeButton.classList.toggle('place__like-button_active'));
-  placeDeleteButton.addEventListener('click', () => placeItem.remove());
-  placeImageButton.addEventListener('click', () => openBigImage(name, url));
-  return placeItem;
-}
-
-function addPlace(item) {
-  elementsPlacesLists.prepend(item);
-}
-
-profileAddNewPlaceButton.addEventListener('click', () => openPopup(popupNewPlace));
-
-popupFormNewPlace.addEventListener('submit', function (evt) {
+popupFormPlace.addEventListener('submit', function (evt) {
   evt.preventDefault(evt);
   addPlace(createPlace(placeName.value, placeUrl.value));
-  //evt.target.reset();
-  //placeUrl.reset();
-  placeName.value = '';
-  placeUrl.value = '';
-  closePopup(popupNewPlace);
+  evt.target.reset();
+  setButtonActivity(saveButtonPlace, false);
+  closePopup(popupPlace);
 });
+
+// validation
+
+const validitySelectors = {
+  formSelector: '.popup__form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__save-button',
+  inactiveButtonClass: 'popup__save-button_disabled',
+  inputErrorClass: 'popup__input_type-error',
+  errorClass: 'popup__input-error_visible'
+};
+
+enableValidation(validitySelectors);
 
 // initialization
 
