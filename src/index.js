@@ -1,4 +1,37 @@
-import {openPopup, closePopup} from './components/modal.js';
+import './index.css';
+
+import jacImage from './images/jyc.jpg';
+import cloImage from './images/close.svg';
+import delImage from './images/delete-icon.svg';
+// import ki1Image from './images/kirill-pershin-1088404-unsplash.jpg';
+// import ki2Image from './images/kirill-pershin-1404681-unsplash.jpg';
+// import ki3Image from './images/kirill-pershin-1556355-unsplash.jpg';
+import liaImage from './images/like_active.svg';
+import lidImage from './images/like_disabled.svg';
+import logImage from './images/logo.svg';
+import pluImage from './images/plus.svg';
+import slaImage from './images/slash.svg';
+
+const whoIsTheGoat = [
+  { name: 'jac', image: jacImage },
+  { name: 'clo', image: cloImage },
+  { name: 'del', image: delImage },
+  // { name: 'ki1', image: ki1Image },
+  // { name: 'ki2', image: ki2Image },
+  // { name: 'ki3', image: ki3Image },
+  { name: 'lia', image: liaImage },
+  { name: 'lid', image: lidImage },
+  { name: 'log', image: logImage },
+  { name: 'plu', image: pluImage },
+  { name: 'sla', image: slaImage },
+];
+
+// Jacques-Yves_Cousteau.jpg  kirill-pershin-1088404-unsplash.jpg  like_active.svg    plus.svg
+// close.svg                  kirill-pershin-1404681-unsplash.jpg  like_disabled.svg  slash.svg
+// delete-icon.svg            kirill-pershin-1556355-unsplash.jpg  logo.svg
+
+
+import {openPopup, closePopup} from './components/modal.js'; 
 import {enableValidation, resetInputErrors, setButtonActivity} from './components/validate.js';
 import {createPlace, addPlace} from './components/place.js';
 

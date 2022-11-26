@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru"> 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="author" content="Константин Узких">
-  <link rel="stylesheet" href="./index.css">
+  <!-- <link rel="stylesheet" href="./index.css"> -->
   <title lang="en">Mesto</title>
 </head>
 <body class="body">
@@ -42,7 +42,7 @@
       <!-- секция profile -->
       <section class="profile">
         <div class="personal-card profile__personal-card">
-          <img class="personal-card__avatar" src="./images/Jacques-Yves_Cousteau.jpg" alt="Аватар владельца профиля">
+          <img class="personal-card__avatar" src="<%=require('./images/jyc.jpg')%>" alt="Аватар владельца профиля">
           <div class="personal-card__info">
             <h1 class="personal-card__name">Жак-Ив Кусто</h1>
             <button class="personal-card__edit-button" type="button" aria-label="Редактировать"></button>
@@ -135,7 +135,7 @@
     </li>
   </template>
 
-  <script type="module" src="./index.js"></script>
+  <!-- <script type="module" src="./index.js"></script>  -->
 
 </body>
 </html>
