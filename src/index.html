@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="ru"> 
+<html lang="ru">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="author" content="Константин Узких">
-  <!-- <link rel="stylesheet" href="./index.css"> -->
+  <link rel="stylesheet" href="./index.css">    <!-- УБРАТЬ ДЛЯ WEBPACK -->
   <title lang="en">Mesto</title>
 </head>
 <body class="body">
@@ -15,19 +15,22 @@
 
       *ОСНОВНАЯ СТРАНИЦА*
     Реализована "пассивная" часть сайта: шапка, отображение профиля, картотека и подвал.
-    Первоначальный набор карточек загружается с использованием JS.
 
       *МОДАЛЬНЫЕ ОКНА*
     Реализованы для отображения в режиме модальных окон:
     - форма редактирования профиля,
+    - форма редактирования аватара,
     - форма ввода новых карточек,
-    - окно просмотра фотографии в крупном размере.
+    - окно просмотра фотографии в крупном размере,
+    - запрос подтверждения действия пользователя по удалению карточки.
 
       *ШАБЛОНЫ*
     Реализован html-шаблон для загрузки карточек.
 
     Интерактивность сайта реализована с использованием JS.
-    На данном этапе разработки сайта не реализовано его взаимодействие с сервером для загрузки и выгрузки данных.
+    Хранение профиля владельца (аватар, имя и вид деятельности) и карточек (url-адреса именованных фотографий)
+    осуществляется на внешнем сервере данных.
+    При инициализации сайта профиль владельца и первоначальный набор карточек загружаются с сервера.
     -->
 
     <!-- ОСНОВНАЯ СТРАНИЦА -->
@@ -41,20 +44,23 @@
 
       <!-- секция profile -->
       <section class="profile">
-        <div class="personal-card profile__personal-card">
-          <img class="personal-card__avatar" src="<%=require('./images/jyc.jpg')%>" alt="Аватар владельца профиля">
-          <div class="personal-card__info">
-            <h1 class="personal-card__name">Жак-Ив Кусто</h1>
-            <button class="personal-card__edit-button" type="button" aria-label="Редактировать"></button>
-            <p class="personal-card__activity">Исследователь океана</p>
+        <div class="profile__container">
+          <button class="profile__button-avatar" type="button" aria-label="Редактировать">
+            <img class="profile__avatar" src="#" alt="Аватар владельца профиля">   <!-- УБРАТЬ ДЛЯ WEBPACK -->
+            <!-- <img class="profile__avatar" src="<%=require('./images/jyc.jpg')%>" alt="Аватар владельца профиля">   НЕОБХОДИМО ДЛЯ WEBPACK -->
+          </button>
+          <div class="profile__info">
+            <h1 class="profile__name"></h1>
+            <button class="profile__button-edit" type="button" aria-label="Редактировать"></button>
+            <p class="profile__activity"></p>
           </div>
         </div>
-        <button class="profile__add-place-button" type="button" aria-label="Добавить"></button>
+        <button class="profile__button-add-card" type="button" aria-label="Добавить"></button>
       </section>
 
       <!-- секция elements -->
       <article class="elements" aria-label="Картотека">
-        <ul class="unmarked-list elements__places-list">
+        <ul class="unmarked-list elements__cards-list">
 
         </ul>
       </article>
@@ -69,49 +75,69 @@
     <!-- МОДАЛЬНЫЕ ОКНА -->
 
     <!-- редактирование профиля -->
-    <div class="popup popup_disappearance popup_profile">
-      <div class="popup__container popup__container_profile">
+    <div class="popup popup_disappearance popup_editing-profile">
+      <div class="popup__container">
         <h3 class="popup__title popup__title_profile">Редактировать профиль</h3>
-        <button class="popup__close-button popup__close-button_profile" form="form_profile" type="button" aria-label="Закрыть"></button>
+        <button class="popup__button-close" form="form_profile" type="button" aria-label="Закрыть"></button>
         <form class="popup__form popup__form_profile" id="form_profile" name="form_profile" method="get" novalidate>
-          <label class="popup__form-field">
+          <div class="popup__input-container">
             <input class="popup__input popup__input_profile-name" type="text" id="profile-name" name="profile-name" value="Жак-Ив Кусто" placeholder="Имя" minlength="2" maxlength="40" required>
             <span class="popup__input-error popup__input-error_profile-name"></span>
-          </label>
-          <label class="popup__form-field">
             <input class="popup__input popup__input_profile-activity" type="text" id="profile-activity" name="profile-activity" value="Исследователь океана" placeholder="Деятельность" minlength="2" maxlength="200" required>
             <span class="popup__input-error popup__input-error_profile-activity"></span>
-          </label>
-          <button class="popup__save-button popup__save-button_profile" type="submit">Сохранить</button>
+          </div>
+          <button class="popup__button-submit popup__button-submit_profile" type="submit">Сохранить</button>
         </form>
       </div>
     </div>
 
-    <!-- добавление новых карточек -->
-    <div class="popup popup_disappearance popup_place">
-      <div class="popup__container popup__container_place">
-        <h3 class="popup__title popup__title_place">Новое место</h3>
-        <button class="popup__close-button popup__close-button_place" form="form_place" type="button" aria-label="Закрыть"></button>
-        <form class="popup__form popup__form_place" id="form_place" name="form_place" method="get" novalidate>
-          <label class="popup__form-field">
-            <input class="popup__input popup__input_place-name" type="text" id="place-name" name="place-name" placeholder="Название" minlength="2" maxlength="30" required>
-            <span class="popup__input-error popup__input-error_place-name"></span>
-          </label>
-          <label class="popup__form-field">
-            <input class="popup__input popup__input_place-url" type="url" id="place-url" name="place-url" placeholder="Ссылка на картинку" required>
-            <span class="popup__input-error popup__input-error_place-url"></span>
-          </label>
-          <button class="popup__save-button popup__save-button_disabled popup__save-button_place" type="submit" disabled>Сохранить</button>
+    <!-- создание карточки -->
+    <div class="popup popup_disappearance popup_creating-card">
+      <div class="popup__container">
+        <h3 class="popup__title popup__title_card">Новое место</h3>
+        <button class="popup__button-close" form="form_card" type="button" aria-label="Закрыть"></button>
+        <form class="popup__form popup__form_card" id="form_card" name="form_card" method="get" novalidate>
+          <div class="popup__input-container">
+            <input class="popup__input popup__input_card-name" type="text" id="card-name" name="card-name" placeholder="Название" minlength="2" maxlength="30" required>
+            <span class="popup__input-error popup__input-error_card-name"></span>
+            <input class="popup__input popup__input_card-url" type="url" id="card-url" name="card-url" placeholder="Ссылка на картинку" required>
+            <span class="popup__input-error popup__input-error_card-url"></span>
+          </div>
+          <button class="popup__button-submit popup__button-submit_disabled popup__button-submit_card" type="submit" disabled>Создать</button>
         </form>
       </div>
     </div>
 
-    <!-- окно просмотра крупной картинки -->
-    <div class="popup popup_disappearance popup_increased-image">
+    <!-- увеличение картинки -->
+    <div class="popup popup_disappearance popup_magnification-image">
       <div class="popup__big-image-container">
-        <button class="popup__close-button popup__close-button_big-image" type="button" aria-label="Закрыть"></button>
+        <button class="popup__button-close" type="button" aria-label="Закрыть"></button>
         <img class="popup__big-image" src="#" alt="Фотография: достопримичетельность (ландшафт, пейзаж, строение)">
         <h2 class="popup__title-big-image"></h2>
+      </div>
+    </div>
+
+    <!-- подтверждение действия -->
+    <div class="popup popup_disappearance popup_confirmation-action">
+      <div class="popup__container">
+        <h3 class="popup__title popup__title_confirmation">Вы уверены?</h3>
+        <button class="popup__button-close" type="button" aria-label="Закрыть"></button>
+        <button class="popup__button-submit" type="submit">Да</button>
+      </div>
+    </div>
+
+    <!-- редактирование аватара -->
+    <div class="popup popup_disappearance popup_editing-avatar">
+      <div class="popup__container">
+        <h3 class="popup__title popup__title_avatar">Обновить аватар</h3>
+        <button class="popup__button-close" form="form_avatar" type="button" aria-label="Закрыть"></button>
+        <form class="popup__form popup__form_avatar" id="form_avatar" name="form_avatar" method="get" novalidate>
+          <div class="popup__input-container popup__input-container_avatar">
+            <input class="popup__input popup__input_avatar-url" type="url" id="avatar-url" name="avatar-url" placeholder="Ссылка на аватар" required>
+            <span class="popup__input-error popup__input-error_avatar-url"></span>
+          </div>
+          <button class="popup__button-submit popup__button-submit_avatar" type="submit">Сохранить</button>
+        </form>
       </div>
     </div>
 
@@ -120,22 +146,25 @@
     <!-- ШАБЛОНЫ -->
 
     <!-- карточка -->
-  <template id="place-template">
-    <li class="unmarked-list__item elements__place-item">
-      <article class="place" aria-label="Карточка">
-        <button class="place__image-button" type="button" aria-label="Увеличить">
-          <img class="place__image" src="#" alt="Фотография: достопримичетельность (ландшафт, пейзаж, строение)">
+  <template id="card-template">
+    <li class="unmarked-list__item elements__card-item">
+      <article class="card" aria-label="Карточка">
+        <button class="card__button-image" type="button" aria-label="Увеличить">
+          <img class="card__image" src="#" alt="Фотография: достопримичетельность (ландшафт, пейзаж, строение)">
         </button>
-        <button class="place__delete-button" type="button" aria-label="Удалить"></button>
-        <div class="place__title-box">
-          <h2 class="place__title"></h2>
-          <button class="place__like-button" type="button" aria-label="Лайк"></button>
+        <button class="card__button-delete" type="button" aria-label="Удалить"></button>
+        <div class="card__title-box">
+          <h2 class="card__title"></h2>
+          <div class="card__container-likes">
+            <button class="card__button-like" type="button" aria-label="Лайк"></button>
+            <span class="card__counter-likes"></span>
+          </div>
         </div>
       </article>
     </li>
   </template>
 
-  <!-- <script type="module" src="./index.js"></script>  -->
+  <script type="module" src="./index.js"></script>   <!-- УБРАТЬ ДЛЯ WEBPACK -->
 
 </body>
 </html>

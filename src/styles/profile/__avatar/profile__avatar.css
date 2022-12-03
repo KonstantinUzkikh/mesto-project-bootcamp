@@ -1,0 +1,8 @@
+.profile__avatar {
+  display: block;
+  object-fit: cover;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  cursor: url('./../../../images/pen-big-icon.svg') 0 30, pointer;
+}

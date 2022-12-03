@@ -1,24 +1,22 @@
-let selectors = {};
-
-function showInputError (formElement, inputElement) {
+function showInputError (formElement, inputElement, settings) {
   const errorElement = formElement.querySelector(`.popup__input-error_${inputElement.id}`);
   errorElement.textContent = inputElement.validationMessage;
-  errorElement.classList.add(selectors.errorClass);
-  inputElement.classList.add(selectors.inputErrorClass);
+  errorElement.classList.add(settings.errorClass);
+  inputElement.classList.add(settings.inputErrorClass);
 };
 
-function hideInputError (formElement, inputElement) {
+function hideInputError (formElement, inputElement, settings) {
   const errorElement = formElement.querySelector(`.popup__input-error_${inputElement.id}`);
-  inputElement.classList.remove(selectors.inputErrorClass);
-  errorElement.classList.remove(selectors.errorClass);
+  inputElement.classList.remove(settings.inputErrorClass);
+  errorElement.classList.remove(settings.errorClass);
   errorElement.textContent = '';
 };
 
-function checkValidity (formElement, inputElement) {
+function checkValidity (formElement, inputElement, settings) {
   if (!inputElement.validity.valid) {
-    showInputError(formElement, inputElement);
+    showInputError(formElement, inputElement, settings);
   } else {
-    hideInputError(formElement, inputElement);
+    hideInputError(formElement, inputElement, settings);
   }
 };
 
@@ -26,44 +24,43 @@ function hasInvalidInput (inputList) {
   return inputList.some((inputElement) => {return !inputElement.validity.valid})
 };
 
-function resetInputErrors (formElement) {
-  const inputsArray = Array.from(formElement.querySelectorAll(selectors.inputSelector));
-  inputsArray.forEach((inputElement) => hideInputError(formElement, inputElement));
+function resetInputErrors (formElement, settings) {
+  const inputsArray = Array.from(formElement.querySelectorAll(settings.inputSelector));
+  inputsArray.forEach((inputElement) => hideInputError(formElement, inputElement, settings));
 }
 
-function setButtonActivity (button, state) {
+function setButtonActivity (button, state, settings) {
   if (state) {
     button.removeAttribute('disabled');
-    button.classList.remove(selectors.inactiveButtonClass);
+    button.classList.remove(settings.inactiveButtonClass);
   } else {
     button.setAttribute('disabled', true);
-    button.classList.add(selectors.inactiveButtonClass);
+    button.classList.add(settings.inactiveButtonClass);
   }
 };
 
-function toggleButtonState (inputList, buttonElement) {
-  if (hasInvalidInput(inputList)) {
-    setButtonActivity(buttonElement, false);
+function toggleButtonState (inputList, buttonElement, settings) {
+  if (hasInvalidInput(inputList, settings)) {
+    setButtonActivity(buttonElement, false, settings);
   } else {
-    setButtonActivity (buttonElement, true);
+    setButtonActivity (buttonElement, true, settings);
   }
 };
 
-function setListenersErrors (formElement) {
-  const inputsArray = Array.from(formElement.querySelectorAll(selectors.inputSelector));
-  const button = formElement.querySelector(selectors.submitButtonSelector);
+function setListenersErrors (formElement, settings) {
+  const inputsArray = Array.from(formElement.querySelectorAll(settings.inputSelector));
+  const button = formElement.querySelector(settings.submitButtonSelector);
   inputsArray.forEach((inputElement) => {
     inputElement.addEventListener('input', () => {
-      checkValidity(formElement, inputElement);
-      toggleButtonState (inputsArray, button);
+      checkValidity(formElement, inputElement, settings);
+      toggleButtonState (inputsArray, button, settings);
     });
   });
 }
 
-function enableValidation (validitySelectors) {
-  selectors = validitySelectors;
-  const forms = Array.from(document.querySelectorAll(selectors.formSelector));
-  forms.forEach((formElement) => setListenersErrors(formElement));
+function enableValidation (settings) {
+  const forms = Array.from(document.querySelectorAll(settings.formSelector));
+  forms.forEach((formElement) => setListenersErrors(formElement, settings));
 };
 
 export {enableValidation, resetInputErrors, setButtonActivity}

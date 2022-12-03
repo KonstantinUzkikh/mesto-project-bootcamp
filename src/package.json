@@ -1,0 +1,19 @@
+{
+  "name": "mesto-project-bootcamp",
+  "version": "0.0.1",
+  "description": "Проект размещен по адресу: https://konstantinuzkikh.github.io/mesto-project-bootcamp/",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KonstantinUzkikh/mesto-project-bootcamp.git"
+  },
+  "author": "Konstantin Uzkikh",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/KonstantinUzkikh/mesto-project-bootcamp/issues"
+  },
+  "homepage": "https://github.com/KonstantinUzkikh/mesto-project-bootcamp#readme"
+}

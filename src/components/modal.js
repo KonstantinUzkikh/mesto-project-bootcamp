@@ -1,8 +1,6 @@
-let activePopup;
-
 function escClosePopup (evt) {
   if (evt.key === 'Escape') {
-    closePopup(activePopup);
+    closePopup();
     evt.target.blur();
   }
 }
@@ -13,17 +11,16 @@ function openPopup(popup) {
     popup.classList.remove('popup_disappearance');
     popup.classList.add('popup_appearance');
   }, 100);
-  activePopup = popup;
   document.addEventListener('keydown', escClosePopup)
 }
 
-function closePopup(popup) {
-  activePopup = undefined;
+function closePopup() {
+  const popup = document.querySelector('.popup_opened');
   popup.classList.remove('popup_appearance');
   popup.classList.add('popup_disappearance');
   setTimeout(function() {
     popup.classList.remove('popup_opened');
-  }, 800);
+  }, 700);
   document.removeEventListener('keydown', escClosePopup)
 }
 

@@ -1,146 +1,255 @@
-import './index.css';
+// НАСТРОЙКИ ДЛЯ WEBPACK
 
-import jacImage from './images/jyc.jpg';
-import cloImage from './images/close.svg';
-import delImage from './images/delete-icon.svg';
-// import ki1Image from './images/kirill-pershin-1088404-unsplash.jpg';
-// import ki2Image from './images/kirill-pershin-1404681-unsplash.jpg';
-// import ki3Image from './images/kirill-pershin-1556355-unsplash.jpg';
-import liaImage from './images/like_active.svg';
-import lidImage from './images/like_disabled.svg';
-import logImage from './images/logo.svg';
-import pluImage from './images/plus.svg';
-import slaImage from './images/slash.svg';
+// import './index.css';
 
-const whoIsTheGoat = [
-  { name: 'jac', image: jacImage },
-  { name: 'clo', image: cloImage },
-  { name: 'del', image: delImage },
-  // { name: 'ki1', image: ki1Image },
-  // { name: 'ki2', image: ki2Image },
-  // { name: 'ki3', image: ki3Image },
-  { name: 'lia', image: liaImage },
-  { name: 'lid', image: lidImage },
-  { name: 'log', image: logImage },
-  { name: 'plu', image: pluImage },
-  { name: 'sla', image: slaImage },
-];
+//import jacImage from './images/jyc.jpg';
+//import cloImage from './images/close.svg';
+//import delImage from './images/delete-icon.svg';
+//import liaImage from './images/like_active.svg';
+//import lidImage from './images/like_disabled.svg';
+//import logImage from './images/logo.svg';
+//import pluImage from './images/plus.svg';
+//import slaImage from './images/slash.svg';
 
-// Jacques-Yves_Cousteau.jpg  kirill-pershin-1088404-unsplash.jpg  like_active.svg    plus.svg
-// close.svg                  kirill-pershin-1404681-unsplash.jpg  like_disabled.svg  slash.svg
-// delete-icon.svg            kirill-pershin-1556355-unsplash.jpg  logo.svg
+//const whoIsTheGoat = [
+  //{ name: 'jac', image: jacImage },
+  //{ name: 'clo', image: cloImage },
+  //{ name: 'del', image: delImage },
+  //{ name: 'lia', image: liaImage },
+  //{ name: 'lid', image: lidImage },
+  //{ name: 'log', image: logImage },
+  //{ name: 'plu', image: pluImage },
+  //{ name: 'sla', image: slaImage },
+//];
 
-
-import {openPopup, closePopup} from './components/modal.js'; 
+import {openPopup, closePopup} from './components/modal.js';
 import {enableValidation, resetInputErrors, setButtonActivity} from './components/validate.js';
-import {createPlace, addPlace} from './components/place.js';
+import {createCard, addCardToDOM} from './components/card.js';
+import {getProfile, patchProfile, patchAvatar, getCards, postCard} from './components/api.js';
+import {setButtonTextContant} from './components/utils.js';
 
 // popup events
 
 const popups = document.querySelectorAll('.popup');
-const closeButtons = document.querySelectorAll('.popup__close-button');
+const closeButtons = document.querySelectorAll('.popup__button-close');
 
 popups.forEach((popup) => {
-  popup.addEventListener('click', function (evt) {
-    if (evt.target.classList.contains('popup')) {closePopup(popup)}
+  popup.addEventListener('mousedown', function (evt) {
+    if (evt.target.classList.contains('popup')) {closePopup()}
   });
 });
 
 closeButtons.forEach((button) => {
   const popup = button.closest('.popup');
-  button.addEventListener('click', () => closePopup(popup));
+  button.addEventListener('click', () => closePopup());
 });
 
 // profile events
 
-const personalCard = document.querySelector('.personal-card');
-const personalCardName = personalCard.querySelector('.personal-card__name');
-const personalCardActivity = personalCard.querySelector('.personal-card__activity');
-const personalCardEditButton = personalCard.querySelector('.personal-card__edit-button');
+const profileContainer = document.querySelector('.profile__container');
+const profileAvatar = profileContainer.querySelector('.profile__avatar');
+const profileName = profileContainer.querySelector('.profile__name');
+const profileActivity = profileContainer.querySelector('.profile__activity');
+const buttonEditProfile = profileContainer.querySelector('.profile__button-edit');
 
-const popupProfile = document.querySelector('.popup_profile');
-const popupFormProfile = popupProfile.querySelector('.popup__form_profile');
-const inputName = popupFormProfile.querySelector('.popup__input_profile-name');
-const inputActivity = popupFormProfile.querySelector('.popup__input_profile-activity');
-const saveButtonProfile = popupFormProfile.querySelector('.popup__save-button_profile');
+const popupEditingProfile = document.querySelector('.popup_editing-profile');
+const formProfile = popupEditingProfile.querySelector('.popup__form_profile');
+const inputName = formProfile.querySelector('.popup__input_profile-name');
+const inputActivity = formProfile.querySelector('.popup__input_profile-activity');
+const buttonSubmitProfile = formProfile.querySelector('.popup__button-submit_profile');
 
-personalCardEditButton.addEventListener('click', function () {
-  inputName.value = personalCardName.textContent;
-  inputActivity.value = personalCardActivity.textContent;
-  resetInputErrors(popupFormProfile);
-  setButtonActivity(saveButtonProfile, true);
-  openPopup(popupProfile);
+buttonEditProfile.addEventListener('click', function () {
+  inputName.value = profileName.textContent;
+  inputActivity.value = profileActivity.textContent;
+  resetInputErrors(formProfile, validitySettings);
+  setButtonTextContant(buttonSubmitProfile, 'Сохранить');
+  setButtonActivity(buttonSubmitProfile, true, validitySettings);
+  openPopup(popupEditingProfile);
 });
 
-popupFormProfile.addEventListener('submit', function (evt) {
+formProfile.addEventListener('submit', function (evt) {
   evt.preventDefault(evt);
-  personalCardName.textContent = inputName.value;
-  personalCardActivity.textContent = inputActivity.value;
-  closePopup(popupProfile);
+  if ((inputName.value != profile.name) || (inputActivity.value != profile.about)) {
+    setButtonTextContant(buttonSubmitProfile, 'Сохранение...');
+    patchProfile(inputName.value, inputActivity.value)
+    .then((res) => {
+      profileName.textContent = res.name;
+      profileActivity.textContent = res.about;
+      profile.name = res.name;
+      profile.about = res.about;
+    })
+    .catch(() => {
+      alert('УПС... ОШИБКА ОБНОВЛЕНИЯ ПРОФИЛЯ');
+    })
+  .finally(() => {
+      closePopup();
+    })
+  } else {
+    closePopup();
+  }
 });
 
-// places events
+// cards events
 
-const addPlaceButton = document.querySelector('.profile__add-place-button');
+const buttonAddCard = document.querySelector('.profile__button-add-card');
 
-const popupPlace = document.querySelector('.popup_place');
-const popupFormPlace = popupPlace.querySelector('.popup__form_place');
-const placeName = popupFormPlace.querySelector('.popup__input_place-name');
-const placeUrl = popupFormPlace.querySelector('.popup__input_place-url');
-const saveButtonPlace = popupFormPlace.querySelector('.popup__save-button_place');
+const popupCreatingCard = document.querySelector('.popup_creating-card');
+const formCard = popupCreatingCard.querySelector('.popup__form_card');
+const cardName = formCard.querySelector('.popup__input_card-name');
+const cardUrl = formCard.querySelector('.popup__input_card-url');
+const buttonSubmitCard = formCard.querySelector('.popup__button-submit_card');
 
-addPlaceButton.addEventListener('click', () => openPopup(popupPlace));
+buttonAddCard.addEventListener('click', () => {
+  setButtonTextContant(buttonSubmitCard, 'Создать');
+  openPopup(popupCreatingCard);
+});
 
-popupFormPlace.addEventListener('submit', function (evt) {
+formCard.addEventListener('submit', function (evt) {
   evt.preventDefault(evt);
-  addPlace(createPlace(placeName.value, placeUrl.value));
-  evt.target.reset();
-  setButtonActivity(saveButtonPlace, false);
-  closePopup(popupPlace);
+  const cardItem = {name: cardName.value, link: cardUrl.value};
+  setButtonTextContant(buttonSubmitCard, 'Сохранение...');
+  postCard(cardItem)
+  .then ((res) => {
+    const newcard = {
+      name:     res.name,
+      link:     res.link,
+      owner_id: res.owner._id,
+      card_id:  res._id,
+      likes:    res.likes.map((it) => {
+        return it._id
+      })
+    };
+    cardsArray.push(newcard);
+    addCardToDOM(createCard(newcard));
+    evt.target.reset();
+    setButtonActivity(buttonSubmitCard, false, validitySettings);
+  })
+  .catch (() => {
+    alert('УПС... ОШИБКА ДОБАВЛЕНИЯ КАРТОЧКИ');
+  })
+  .finally(() => {
+    closePopup();
+  })
 });
 
-// validation
+// avatar events
 
-const validitySelectors = {
+const buttonEditAvatar = profileContainer.querySelector('.profile__button-avatar');
+
+const popupEditingAvatar = document.querySelector('.popup_editing-avatar');
+const formAvatar = popupEditingAvatar.querySelector('.popup__form_avatar');
+const inputAvatarUrl = popupEditingAvatar.querySelector('.popup__input_avatar-url');
+const buttonSubmitAvatar = popupEditingAvatar.querySelector('.popup__button-submit_avatar');
+
+buttonEditAvatar.addEventListener('click', function () {
+  inputAvatarUrl.value = profileAvatar.src;
+  resetInputErrors(formAvatar, validitySettings);
+  setButtonTextContant(buttonSubmitAvatar, 'Сохранить');
+  setButtonActivity(buttonSubmitAvatar, true, validitySettings);
+  openPopup(popupEditingAvatar);
+});
+
+formAvatar.addEventListener('submit', function (evt) {
+  evt.preventDefault(evt);
+  if (inputAvatarUrl.value != profile.avatar) {
+    setButtonTextContant(buttonSubmitAvatar, 'Сохранение...');
+    patchAvatar(`${inputAvatarUrl.value}`)
+    .then((res) => {
+      profileAvatar.src = res.avatar;
+      profile.avatar = res.avatar;
+    })
+    .catch((res) => {
+      alert(`УПС... Проверьте корректность ссылки: ${inputAvatarUrl.value}`);
+    })
+    .finally(() => {
+      closePopup();
+    })
+  } else {
+    closePopup();
+  }
+});
+
+// initialization validation
+
+const validitySettings = {
   formSelector: '.popup__form',
   inputSelector: '.popup__input',
-  submitButtonSelector: '.popup__save-button',
-  inactiveButtonClass: 'popup__save-button_disabled',
+  submitButtonSelector: '.popup__button-submit',
+  inactiveButtonClass: 'popup__button-submit_disabled',
   inputErrorClass: 'popup__input_type-error',
   errorClass: 'popup__input-error_visible'
 };
 
-enableValidation(validitySelectors);
+enableValidation(validitySettings);
 
-// initialization
+// initialization profile
 
-  const initialCardsPlaces = [
-    {
-      name: 'Архыз',
-      link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
-    },
-    {
-      name: 'Челябинская область',
-      link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
-    },
-    {
-      name: 'Иваново',
-      link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
-    },
-    {
-      name: 'Камчатка',
-      link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
-    },
-    {
-      name: 'Холмогорский район',
-      link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
-    },
-    {
-      name: 'Байкал',
-      link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
-    }
-  ];
+let profile = {};
 
-for (let i = 0; i < initialCardsPlaces.length; i++) {
-  addPlace(createPlace(initialCardsPlaces[i].name, initialCardsPlaces[i].link));
-}
+getProfile()
+.then ((res) => {
+  profile = res;
+  return profile;
+})
+.catch (() => {
+  profile = {
+    about:  'Исследователь океана',
+    avatar: './images/jyc.jpg',
+    cohort: 'wbf-cohort-3',
+    name:   'Жак-Ив Кусто',
+    _id:    ''
+  };
+  alert('УПС... ОШИБКА ИНИЦИАЛИЗАЦИИ ПРОФИЛЯ');
+  return profile;
+})
+.finally(() => {
+  profileAvatar.src = profile.avatar;
+  profileName.textContent = profile.name;
+  profileActivity.textContent = profile.about;
+})
+
+// initialization cards
+
+let cardsArray = [];
+
+getCards()
+.then ((res) => {
+  cardsArray = res.map((item) => {
+    const card = {
+      name:     item.name,
+      link:     item.link,
+      owner_id: item.owner._id,
+      card_id:  item._id,
+      likes:    item.likes.map((it) => {
+        return it._id
+      })
+    };
+    return card;
+  });
+  cardsArray.forEach((card) => {
+    addCardToDOM(createCard(card));
+  })
+})
+.catch(() => {
+  alert('УПС... ОШИБКА ИНИЦИАЛИЗАЦИИ КАРТОТЕКИ');
+})
+
+export {profile, cardsArray}
+
+//about:  "Студент"
+//avatar: "https://burst.shopifycdn.com/photos/cute-curious-cat.jpg?width=925&format=pjpg&exif=1&iptc=1"
+//cohort: "wbf-cohort-3"
+//name:   "Мечтатель"
+//_id:    "77980b944a1e3bef00434068"
+
+//createdAt:  "2022-12-01T10:07:22.457Z"
+//likes:      []
+//link: "https://..."
+//name:       "Горы"
+//owner:
+//  about:  "Студент"
+//  avatar: "https://burst.shopifycdn.com/photos/cute-curious-cat.jpg?width=925&format=pjpg&exif=1&iptc=1"
+//  cohort: "wbf-cohort-3"
+//  name:   "Мечтатель"
+//  _id:    "77980b944a1e3bef00434068"
+//_id:        "63887cda7bbd671a241a32d1"
