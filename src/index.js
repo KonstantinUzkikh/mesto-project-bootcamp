@@ -1,25 +1,11 @@
 // НАСТРОЙКИ ДЛЯ WEBPACK
 
-// import './index.css';
+import './index.css';
 
 //import jacImage from './images/jyc.jpg';
-//import cloImage from './images/close.svg';
-//import delImage from './images/delete-icon.svg';
-//import liaImage from './images/like_active.svg';
-//import lidImage from './images/like_disabled.svg';
-//import logImage from './images/logo.svg';
-//import pluImage from './images/plus.svg';
-//import slaImage from './images/slash.svg';
-
+//
 //const whoIsTheGoat = [
-  //{ name: 'jac', image: jacImage },
-  //{ name: 'clo', image: cloImage },
-  //{ name: 'del', image: delImage },
-  //{ name: 'lia', image: liaImage },
-  //{ name: 'lid', image: lidImage },
-  //{ name: 'log', image: logImage },
-  //{ name: 'plu', image: pluImage },
-  //{ name: 'sla', image: slaImage },
+//  { name: 'jac', image: jacImage },
 //];
 
 import {openPopup, closePopup} from './components/modal.js';
@@ -235,21 +221,3 @@ getCards()
 })
 
 export {profile, cardsArray}
-
-//about:  "Студент"
-//avatar: "https://burst.shopifycdn.com/photos/cute-curious-cat.jpg?width=925&format=pjpg&exif=1&iptc=1"
-//cohort: "wbf-cohort-3"
-//name:   "Мечтатель"
-//_id:    "77980b944a1e3bef00434068"
-
-//createdAt:  "2022-12-01T10:07:22.457Z"
-//likes:      []
-//link: "https://..."
-//name:       "Горы"
-//owner:
-//  about:  "Студент"
-//  avatar: "https://burst.shopifycdn.com/photos/cute-curious-cat.jpg?width=925&format=pjpg&exif=1&iptc=1"
-//  cohort: "wbf-cohort-3"
-//  name:   "Мечтатель"
-//  _id:    "77980b944a1e3bef00434068"
-//_id:        "63887cda7bbd671a241a32d1"

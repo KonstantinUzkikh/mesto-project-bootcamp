@@ -2,7 +2,7 @@
 // https://burst.shopifycdn.com/photos/cute-curious-cat.jpg?width=925&format=pjpg&exif=1&iptc=1//
 // https://burst.shopifycdn.com/photos/business-pug-working-on-laptop.jpg?width=373&format=pjpg&exif=1&iptc=1
 // https://burst.shopifycdn.com/photos/hiker-looks-up-at-vertical-mountain-peaks.jpg?width=925&format=pjpg&exif=1&iptc=1
-
+//
 
 // server request parameters
 

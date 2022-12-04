@@ -1,4 +1,4 @@
-import {profile, cardsArray} from './../index.js';//
+import {profile, cardsArray} from './../index.js';
 import {openPopup, closePopup} from './modal.js';
 import {deleteCard, rewriteLike} from './api.js';
 import {setButtonTextContant} from './utils.js';
