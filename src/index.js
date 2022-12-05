@@ -9,25 +9,61 @@ import './index.css';
 //];
 
 import {openPopup, closePopup} from './components/modal.js';
-import {enableValidation, resetInputErrors, setButtonActivity} from './components/validate.js';
+import {enableValidation, resetInputErrors, toggleButtonState} from './components/validate.js';
 import {createCard, addCardToDOM} from './components/card.js';
 import {getProfile, patchProfile, patchAvatar, getCards, postCard} from './components/api.js';
 import {setButtonTextContant} from './components/utils.js';
 
-// popup events
+// initialization profile and cards
+
+let profile = {};
+let cardsArray = [];
+
+Promise.all([getProfile(), getCards()])
+.then(([userData, cardsData]) => {
+  profile = userData;
+  profileAvatar.src = profile.avatar;
+  profileName.textContent = profile.name;
+  profileActivity.textContent = profile.about;
+  cardsArray = cardsData.map((item) => {
+    const card = {
+      name:     item.name,
+      link:     item.link,
+      owner_id: item.owner._id,
+      card_id:  item._id,
+      likes:    item.likes.map((it) => {
+        return it._id
+      })
+    };
+    return card;
+  });
+  cardsArray.forEach((card) => {
+    addCardToDOM(createCard(card));
+  })
+})
+.catch((res) => alert(`${res} - ошибка чтения данных с сервера`));
+
+// initialization validation
+
+const validitySettings = {
+  formSelector: '.popup__form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__button-submit',
+  inactiveButtonClass: 'popup__button-submit_disabled',
+  inputErrorClass: 'popup__input_type-error',
+  errorClass: 'popup__input-error_visible'
+};
+
+enableValidation(validitySettings);
+
+// popup close events
 
 const popups = document.querySelectorAll('.popup');
-const closeButtons = document.querySelectorAll('.popup__button-close');
 
 popups.forEach((popup) => {
   popup.addEventListener('mousedown', function (evt) {
-    if (evt.target.classList.contains('popup')) {closePopup()}
+    if (evt.target.classList.contains('popup') || evt.target.classList.contains('popup__button-close')) {closePopup()}
   });
-});
-
-closeButtons.forEach((button) => {
-  const popup = button.closest('.popup');
-  button.addEventListener('click', () => closePopup());
 });
 
 // profile events
@@ -39,40 +75,65 @@ const profileActivity = profileContainer.querySelector('.profile__activity');
 const buttonEditProfile = profileContainer.querySelector('.profile__button-edit');
 
 const popupEditingProfile = document.querySelector('.popup_editing-profile');
-const formProfile = popupEditingProfile.querySelector('.popup__form_profile');
-const inputName = formProfile.querySelector('.popup__input_profile-name');
-const inputActivity = formProfile.querySelector('.popup__input_profile-activity');
-const buttonSubmitProfile = formProfile.querySelector('.popup__button-submit_profile');
+const formProfile = document.forms['form_profile'];
+const inputName = formProfile.elements['profile-name'];
+const inputActivity = formProfile.elements['profile-activity'];
+const buttonSubmitProfile = formProfile.elements['button-submit_profile'];
 
 buttonEditProfile.addEventListener('click', function () {
   inputName.value = profileName.textContent;
   inputActivity.value = profileActivity.textContent;
   resetInputErrors(formProfile, validitySettings);
-  setButtonTextContant(buttonSubmitProfile, 'Сохранить');
-  setButtonActivity(buttonSubmitProfile, true, validitySettings);
+  toggleButtonState([inputName, inputActivity], buttonSubmitProfile, validitySettings);
   openPopup(popupEditingProfile);
 });
 
 formProfile.addEventListener('submit', function (evt) {
   evt.preventDefault(evt);
-  if ((inputName.value != profile.name) || (inputActivity.value != profile.about)) {
-    setButtonTextContant(buttonSubmitProfile, 'Сохранение...');
-    patchProfile(inputName.value, inputActivity.value)
-    .then((res) => {
-      profileName.textContent = res.name;
-      profileActivity.textContent = res.about;
-      profile.name = res.name;
-      profile.about = res.about;
-    })
-    .catch(() => {
-      alert('УПС... ОШИБКА ОБНОВЛЕНИЯ ПРОФИЛЯ');
-    })
+  setButtonTextContant(buttonSubmitProfile, 'Сохранение...');
+  patchProfile(inputName.value, inputActivity.value)
+  .then((res) => {
+    profileName.textContent = res.name;
+    profileActivity.textContent = res.about;
+    profile.name = res.name;
+    profile.about = res.about;
+  })
+  .then(() =>{closePopup()})
+  .catch((res) => alert(`${res} - ошибка записи профиля`))
   .finally(() => {
-      closePopup();
-    })
-  } else {
-    closePopup();
-  }
+    setButtonTextContant(buttonSubmitProfile, 'Сохранить');
+  })
+});
+
+// avatar events
+
+const buttonEditAvatar = profileContainer.querySelector('.profile__button-avatar');
+
+const popupEditingAvatar = document.querySelector('.popup_editing-avatar');
+const formAvatar = document.forms['form_avatar'];
+const inputAvatarUrl = formAvatar.elements['avatar-url'];
+const buttonSubmitAvatar = formAvatar.elements['button-submit_avatar'];
+
+buttonEditAvatar.addEventListener('click', function () {
+  inputAvatarUrl.value = profileAvatar.src;
+  resetInputErrors(formAvatar, validitySettings);
+  toggleButtonState([inputAvatarUrl], buttonSubmitAvatar, validitySettings);
+  openPopup(popupEditingAvatar);
+});
+
+formAvatar.addEventListener('submit', function (evt) {
+  evt.preventDefault(evt);
+  setButtonTextContant(buttonSubmitAvatar, 'Сохранение...');
+  patchAvatar(`${inputAvatarUrl.value}`)
+  .then((res) => {
+    profileAvatar.src = res.avatar;
+    profile.avatar = res.avatar;
+  })
+  .then(() =>{closePopup()})
+  .catch((res) => alert(`${res} - ошибка записи url аватара`))
+  .finally(() => {
+    setButtonTextContant(buttonSubmitAvatar, 'Сохранить');
+  })
 });
 
 // cards events
@@ -80,14 +141,19 @@ formProfile.addEventListener('submit', function (evt) {
 const buttonAddCard = document.querySelector('.profile__button-add-card');
 
 const popupCreatingCard = document.querySelector('.popup_creating-card');
-const formCard = popupCreatingCard.querySelector('.popup__form_card');
-const cardName = formCard.querySelector('.popup__input_card-name');
-const cardUrl = formCard.querySelector('.popup__input_card-url');
-const buttonSubmitCard = formCard.querySelector('.popup__button-submit_card');
+const formCard = document.forms['form_card'];
+const cardName = formCard.elements['card-name'];
+const cardUrl = formCard.elements['card-url'];
+const buttonSubmitCard = formCard.elements['button-submit_card'];
 
-buttonAddCard.addEventListener('click', () => {
-  setButtonTextContant(buttonSubmitCard, 'Создать');
-  openPopup(popupCreatingCard);
+toggleButtonState([cardName, cardUrl], buttonSubmitCard, validitySettings);
+
+buttonAddCard.addEventListener('click', () => {openPopup(popupCreatingCard)});
+
+formCard.addEventListener('reset', () => {
+  setTimeout(() => {
+    toggleButtonState ([cardName, cardUrl], buttonSubmitCard, validitySettings);
+  }, 0);
 });
 
 formCard.addEventListener('submit', function (evt) {
@@ -108,116 +174,12 @@ formCard.addEventListener('submit', function (evt) {
     cardsArray.push(newcard);
     addCardToDOM(createCard(newcard));
     evt.target.reset();
-    setButtonActivity(buttonSubmitCard, false, validitySettings);
   })
-  .catch (() => {
-    alert('УПС... ОШИБКА ДОБАВЛЕНИЯ КАРТОЧКИ');
-  })
+  .then(() =>{closePopup()})
+  .catch((res) => alert(`${res} - ошибка записи карточки`))
   .finally(() => {
-    closePopup();
+    setButtonTextContant(buttonSubmitCard, 'Создать');
   })
 });
-
-// avatar events
-
-const buttonEditAvatar = profileContainer.querySelector('.profile__button-avatar');
-
-const popupEditingAvatar = document.querySelector('.popup_editing-avatar');
-const formAvatar = popupEditingAvatar.querySelector('.popup__form_avatar');
-const inputAvatarUrl = popupEditingAvatar.querySelector('.popup__input_avatar-url');
-const buttonSubmitAvatar = popupEditingAvatar.querySelector('.popup__button-submit_avatar');
-
-buttonEditAvatar.addEventListener('click', function () {
-  inputAvatarUrl.value = profileAvatar.src;
-  resetInputErrors(formAvatar, validitySettings);
-  setButtonTextContant(buttonSubmitAvatar, 'Сохранить');
-  setButtonActivity(buttonSubmitAvatar, true, validitySettings);
-  openPopup(popupEditingAvatar);
-});
-
-formAvatar.addEventListener('submit', function (evt) {
-  evt.preventDefault(evt);
-  if (inputAvatarUrl.value != profile.avatar) {
-    setButtonTextContant(buttonSubmitAvatar, 'Сохранение...');
-    patchAvatar(`${inputAvatarUrl.value}`)
-    .then((res) => {
-      profileAvatar.src = res.avatar;
-      profile.avatar = res.avatar;
-    })
-    .catch((res) => {
-      alert(`УПС... Проверьте корректность ссылки: ${inputAvatarUrl.value}`);
-    })
-    .finally(() => {
-      closePopup();
-    })
-  } else {
-    closePopup();
-  }
-});
-
-// initialization validation
-
-const validitySettings = {
-  formSelector: '.popup__form',
-  inputSelector: '.popup__input',
-  submitButtonSelector: '.popup__button-submit',
-  inactiveButtonClass: 'popup__button-submit_disabled',
-  inputErrorClass: 'popup__input_type-error',
-  errorClass: 'popup__input-error_visible'
-};
-
-enableValidation(validitySettings);
-
-// initialization profile
-
-let profile = {};
-
-getProfile()
-.then ((res) => {
-  profile = res;
-  return profile;
-})
-.catch (() => {
-  profile = {
-    about:  'Исследователь океана',
-    avatar: './images/jyc.jpg',
-    cohort: 'wbf-cohort-3',
-    name:   'Жак-Ив Кусто',
-    _id:    ''
-  };
-  alert('УПС... ОШИБКА ИНИЦИАЛИЗАЦИИ ПРОФИЛЯ');
-  return profile;
-})
-.finally(() => {
-  profileAvatar.src = profile.avatar;
-  profileName.textContent = profile.name;
-  profileActivity.textContent = profile.about;
-})
-
-// initialization cards
-
-let cardsArray = [];
-
-getCards()
-.then ((res) => {
-  cardsArray = res.map((item) => {
-    const card = {
-      name:     item.name,
-      link:     item.link,
-      owner_id: item.owner._id,
-      card_id:  item._id,
-      likes:    item.likes.map((it) => {
-        return it._id
-      })
-    };
-    return card;
-  });
-  cardsArray.forEach((card) => {
-    addCardToDOM(createCard(card));
-  })
-})
-.catch(() => {
-  alert('УПС... ОШИБКА ИНИЦИАЛИЗАЦИИ КАРТОТЕКИ');
-})
 
 export {profile, cardsArray}

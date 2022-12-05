@@ -12,12 +12,13 @@ const popupTitleBigImage = popupMagnificationImage.querySelector('.popup__title-
 
 const popupConfirmationAction = document.querySelector('.popup_confirmation-action');
 const buttonConfirmDelete = popupConfirmationAction.querySelector('.popup__button-submit');
+
 let cardToDelete;
 
 function toggleLike(card) {
   let method;
   if ((card.likes.some((item) => {return item === profile._id}))) {method = 'DELETE'} else {method = 'PUT'}
-  rewriteLike(method,card.card_id)
+  rewriteLike(method,card)
   .then((data) => {
     card.likes = data.likes.map((it) => {
       return it._id
@@ -29,9 +30,7 @@ function toggleLike(card) {
     };
     card.refDOM.querySelector('.card__button-like').classList.toggle('card__button-like_active');
   })
-  .catch(() => {
-    alert('УПС... ОШИБКА ПРОСТАВЛЕНИЯ ЛАЙКА');
-  })
+  .catch((res) => alert(`${res} - ошибка обмена данными с сервером`));
 }
 
 function openBigImage(card) {
@@ -43,14 +42,13 @@ function openBigImage(card) {
 
 function confirmCardDeletion(card) {
   cardToDelete = card;
-  setButtonTextContant(buttonConfirmDelete, 'Да');
   openPopup(popupConfirmationAction)
 }
 
 buttonConfirmDelete.addEventListener('click', function (evt) {
   evt.preventDefault(evt);
   setButtonTextContant(buttonConfirmDelete, 'Удаление...');
-  deleteCard(cardToDelete.card_id)
+  deleteCard(cardToDelete)
   .then(() => {
     let indexCard;
     cardsArray.some((item, index) => {
@@ -61,11 +59,10 @@ buttonConfirmDelete.addEventListener('click', function (evt) {
     removeCardFromDOM(cardsArray[indexCard].refDOM);
     cardsArray.splice(indexCard, 1);
   })
-  .catch (() => {
-    alert('УПС... ОШИБКА УДАЛЕНИЯ КАРТОЧКИ');
-  })
+  .then(() =>{closePopup()})
+  .catch((res) => alert(`${res} - ошибка обмена данными с сервером`))
   .finally(() => {
-    closePopup();
+    setButtonTextContant(buttonConfirmDelete, 'Да');
   })
 })
 

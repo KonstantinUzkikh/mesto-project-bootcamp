@@ -18,9 +18,7 @@ function closePopup() {
   const popup = document.querySelector('.popup_opened');
   popup.classList.remove('popup_appearance');
   popup.classList.add('popup_disappearance');
-  setTimeout(function() {
-    popup.classList.remove('popup_opened');
-  }, 700);
+  setTimeout(() => {popup.classList.remove('popup_opened')}, 700);
   document.removeEventListener('keydown', escClosePopup)
 }
 

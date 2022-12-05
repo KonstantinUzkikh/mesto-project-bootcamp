@@ -20,8 +20,8 @@ function checkValidity (formElement, inputElement, settings) {
   }
 };
 
-function hasInvalidInput (inputList) {
-  return inputList.some((inputElement) => {return !inputElement.validity.valid})
+function hasInvalidInput (arrayInputs) {
+  return arrayInputs.some((inputElement) => {return !inputElement.validity.valid})
 };
 
 function resetInputErrors (formElement, settings) {
@@ -29,21 +29,13 @@ function resetInputErrors (formElement, settings) {
   inputsArray.forEach((inputElement) => hideInputError(formElement, inputElement, settings));
 }
 
-function setButtonActivity (button, state, settings) {
-  if (state) {
-    button.removeAttribute('disabled');
-    button.classList.remove(settings.inactiveButtonClass);
+function toggleButtonState (arrayInputs, buttonElement, settings) {
+  if (hasInvalidInput(arrayInputs, settings)) {
+    buttonElement.setAttribute('disabled', true);
+    buttonElement.classList.add(settings.inactiveButtonClass);
   } else {
-    button.setAttribute('disabled', true);
-    button.classList.add(settings.inactiveButtonClass);
-  }
-};
-
-function toggleButtonState (inputList, buttonElement, settings) {
-  if (hasInvalidInput(inputList, settings)) {
-    setButtonActivity(buttonElement, false, settings);
-  } else {
-    setButtonActivity (buttonElement, true, settings);
+    buttonElement.removeAttribute('disabled');
+    buttonElement.classList.remove(settings.inactiveButtonClass);
   }
 };
 
@@ -59,8 +51,8 @@ function setListenersErrors (formElement, settings) {
 }
 
 function enableValidation (settings) {
-  const forms = Array.from(document.querySelectorAll(settings.formSelector));
-  forms.forEach((formElement) => setListenersErrors(formElement, settings));
+  const arrayForms = Array.from(document.querySelectorAll(settings.formSelector));
+  arrayForms.forEach((formElement) => setListenersErrors(formElement, settings));
 };
 
-export {enableValidation, resetInputErrors, setButtonActivity}
+export {enableValidation, resetInputErrors, toggleButtonState}
