@@ -2,12 +2,6 @@
 
 import './index.css';
 
-//import jacImage from './images/jyc.jpg';
-//
-//const whoIsTheGoat = [
-//  { name: 'jac', image: jacImage },
-//];
-
 import {openPopup, closePopup} from './components/modal.js';
 import {enableValidation, resetInputErrors, toggleButtonState} from './components/validate.js';
 import {createCard, addCardToDOM} from './components/card.js';
